@@ -14,6 +14,10 @@ export const App = (() => {
     return projects.slice();
   };
 
+  function setProjects(newProjects){
+    projects = newProjects;
+  };
+
   function getCurrentProject(){
     return currentProject;
   }
@@ -34,6 +38,11 @@ export const App = (() => {
     projects.push(new Project(name));
   };
 
+  function removeCurrentProject(){
+    let index = projects.findIndex(p => p.getId() === currentProject.getId());
+    projects.splice(index, 1);
+  }
+
   function addTodoToCurrentProject(todo){
     currentProject.addTodo(todo);
   };
@@ -46,5 +55,22 @@ export const App = (() => {
     currentProject.markTodoAsComplete(todo);
   }
 
-  return {getProjects, getCurrentProject, setCurrentProject, getCurrentTodo, setCurrentTodo, createNewProject, addTodoToCurrentProject, removeTodoFromCurrentProject, markTodoAsComplete};
+  function hydrate(data){
+    projects = [];
+
+    data.forEach(pData => {
+      const p = new Project(pData.name);
+
+      pData.todos.forEach(tData => {
+        const t = new Todo(tData.title, tData.description, tData.dueDate, 
+          tData.priority, tData.notes );
+          p.addTodo(t);
+      })
+
+      projects.push(p);
+    })
+    currentProject = projects[0];
+  }
+
+  return {getProjects, setProjects, getCurrentProject, setCurrentProject, getCurrentTodo, setCurrentTodo, createNewProject, removeCurrentProject, addTodoToCurrentProject, removeTodoFromCurrentProject, markTodoAsComplete, hydrate};
 })();

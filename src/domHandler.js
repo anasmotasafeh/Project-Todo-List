@@ -1,14 +1,13 @@
 import {App} from "./app.js"
 import {Todo} from "./todo.js"
+import { saveToStorage } from "./localStorage.js";
 // DOM Elements:
-const addProjectButton = document.createElement("button");
+const addProjectButton = document.querySelector(".addProjectButton");
 addProjectButton.textContent = "Create new Project"
 const projectDilogEle = document.createElement("dialog");
 const projectForm = createProjectForm();
 const todoDilogEle = document.querySelector(".todoDialog");
 const todoForm = createTodoForm();
-
-
 
 
 function createInputField(title, defaultValue="") {
@@ -71,6 +70,7 @@ function createTodoEle(todo) {
   todoEle.dataset.id = todo.getId();
 
   const deleteEle = document.createElement("button");
+  deleteEle.classList.add("deleteButton");
   deleteEle.dataset.id = todo.getId();
   deleteEle.textContent = "Delete";
   todoEle.appendChild(deleteEle);
@@ -85,6 +85,7 @@ function createTodoEle(todo) {
     e.stopPropagation();
     const index = App.getCurrentProject().getTodos().findIndex(t => t.getId() === e.target.dataset.id);
     App.removeTodoFromCurrentProject(App.getCurrentProject().getTodos()[index]);
+    saveToStorage("projects", App.getProjects());
     render();
   })
   
@@ -94,7 +95,16 @@ function createTodoEle(todo) {
 // Create DOM element with event handler for a project
 function createProjectEle(project) {
   const projectEle = document.createElement("div");
-  projectEle.textContent = "Project: " + project.getName();
+  const projectName = document.createElement("b");
+
+  projectName.textContent = "Project: " + project.getName();
+  projectEle.appendChild(projectName);
+
+  const deleteProjectButton = document.createElement("button");
+  deleteProjectButton.classList.add("deleteButton");
+  deleteProjectButton.textContent = "Delete this Project";
+  projectEle.appendChild(deleteProjectButton);
+
   const addTodoButton = document.createElement("button");
   addTodoButton.textContent = "Add new Todo";
   projectEle.appendChild(addTodoButton);
@@ -106,6 +116,13 @@ function createProjectEle(project) {
     fillProjectForm(project);
     projectDilogEle.showModal();
     
+  })
+  deleteProjectButton.addEventListener("click", e => {
+    e.stopPropagation();
+    App.removeCurrentProject();
+    saveToStorage("projects", App.getProjects());
+    render();
+
   })
   addTodoButton.addEventListener("click", e => {
     e.stopPropagation();
@@ -123,7 +140,7 @@ export function init(){
   projectDilogEle.appendChild(projectForm);
 
   document.body.appendChild(projectDilogEle);
-  document.body.appendChild(addProjectButton);
+  // document.body.appendChild(addProjectButton);
 
   setupGloabalListeners()
   render();
@@ -146,6 +163,7 @@ function setupGloabalListeners(){
   todoDilogEle.close();
   todoForm.reset();
   render();
+  saveToStorage("projects", App.getProjects());
 })
 
   projectForm.addEventListener("submit", e => {
@@ -160,6 +178,7 @@ function setupGloabalListeners(){
     projectDilogEle.close();
     projectForm.reset();
     render();
+    saveToStorage("projects", App.getProjects());
   })
 
   addProjectButton.addEventListener("click", e => {
