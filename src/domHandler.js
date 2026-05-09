@@ -1,6 +1,7 @@
 import {App} from "./app.js"
 import {Todo} from "./todo.js"
 import { saveToStorage } from "./localStorage.js";
+
 // DOM Elements:
 const addProjectButton = document.querySelector(".addProjectButton");
 addProjectButton.textContent = "Create new Project"
@@ -138,10 +139,7 @@ function createProjectEle(project) {
 export function init(){
   todoDilogEle.appendChild(todoForm);
   projectDilogEle.appendChild(projectForm);
-
   document.body.appendChild(projectDilogEle);
-  // document.body.appendChild(addProjectButton);
-
   setupGloabalListeners()
   render();
 }
@@ -162,8 +160,8 @@ function setupGloabalListeners(){
   }
   todoDilogEle.close();
   todoForm.reset();
-  render();
   saveToStorage("projects", App.getProjects());
+  render();
 })
 
   projectForm.addEventListener("submit", e => {
@@ -177,8 +175,8 @@ function setupGloabalListeners(){
     }
     projectDilogEle.close();
     projectForm.reset();
-    render();
     saveToStorage("projects", App.getProjects());
+    render();
   })
 
   addProjectButton.addEventListener("click", e => {
@@ -207,5 +205,3 @@ export function render(){
 
 
 }
-
-

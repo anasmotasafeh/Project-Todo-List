@@ -1,4 +1,3 @@
-
 export class Todo {
 
   constructor(title, description, dueDate, priority, notes){
@@ -12,7 +11,7 @@ export class Todo {
   }
 
   getId(){
-    return this.title;
+    return this.id;
   }
   getTitle(){
     return this.title;

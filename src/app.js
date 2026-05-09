@@ -6,7 +6,6 @@ export const App = (() => {
   let projects = [];
   projects.push(new Project("default"))
 
-  // if ()
   let currentProject = projects[0];
   let currentTodo = null;
 
@@ -23,7 +22,6 @@ export const App = (() => {
   }
 
   function setCurrentProject(project) {
-    // let index = projects.findIndex(p => p.getId() === projectId);
     currentProject = project;
   };
 
