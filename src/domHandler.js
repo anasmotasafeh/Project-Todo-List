@@ -4,14 +4,14 @@ import { saveToStorage } from "./localStorage.js";
 
 // DOM Elements:
 const addProjectButton = document.querySelector(".addProjectButton");
-addProjectButton.textContent = "Create new Project"
+addProjectButton.textContent = "انشاء قائمة جديده"
 const projectDilogEle = document.createElement("dialog");
 const projectForm = createProjectForm();
 const todoDilogEle = document.querySelector(".todoDialog");
 const todoForm = createTodoForm();
 
 
-function createInputField(title, defaultValue="") {
+function createInputField(title, name, defaultValue="") {
   // container
   const wrapper = document.createElement("div");
 
@@ -23,7 +23,7 @@ function createInputField(title, defaultValue="") {
   const input = document.createElement("input");
   input.type = "text";
   input.value = defaultValue;
-  input.name = title;
+  input.name = name;
 
   // add to wrapper
   wrapper.append(label, input);
@@ -34,13 +34,13 @@ function createInputField(title, defaultValue="") {
 // Todo Form
 function createTodoForm(){
   const todoForm = document.createElement("form");
-  const titleField = createInputField("Title")
-  const descriptionField = createInputField("Description")
-  const dueDateField = createInputField("DueDate", "")
-  const priorityField = createInputField("Priority")
-  const notesField = createInputField("Notes")
+  const titleField = createInputField("الاسم", "title")
+  const descriptionField = createInputField("الوصف", "description")
+  const dueDateField = createInputField("يوم", "dueDate")
+  const priorityField = createInputField("الاهمية", "priority")
+  const notesField = createInputField("ملاحظات", "notes")
   const submetButton = document.createElement("button");
-  submetButton.textContent = "Save";
+  submetButton.textContent = "حفظ";
   todoForm.append(titleField, descriptionField, dueDateField, priorityField, notesField, submetButton);
   return todoForm;
 }
@@ -54,9 +54,9 @@ function fillTodoForm(todo){
 
 function createProjectForm(){
   const projectForm = document.createElement("form");
-  const nameField = createInputField("Name")
+  const nameField = createInputField("الاسم", "name")
   const submetButton = document.createElement("button");
-  submetButton.textContent = "Save";
+  submetButton.textContent = "حفظ";
   projectForm.append(nameField, submetButton);
   return projectForm;
 }
@@ -67,13 +67,13 @@ function fillProjectForm(project){
 // Create DOM element with event handlers for a todo
 function createTodoEle(todo) {
   const todoEle = document.createElement("div");
-  todoEle.textContent = todo.getTitle() + " due at " + todo.getDueDate();
+  todoEle.textContent = todo.getTitle() + " مطلوب يوم:  " + todo.getDueDate();
   todoEle.dataset.id = todo.getId();
 
   const deleteEle = document.createElement("button");
   deleteEle.classList.add("deleteButton");
   deleteEle.dataset.id = todo.getId();
-  deleteEle.textContent = "Delete";
+  deleteEle.textContent = "حذف";
   todoEle.appendChild(deleteEle);
 
   // Event Handlers:
@@ -98,16 +98,16 @@ function createProjectEle(project) {
   const projectEle = document.createElement("div");
   const projectName = document.createElement("b");
 
-  projectName.textContent = "Project: " + project.getName();
+  projectName.textContent = project.getName();
   projectEle.appendChild(projectName);
 
   const deleteProjectButton = document.createElement("button");
   deleteProjectButton.classList.add("deleteButton");
-  deleteProjectButton.textContent = "Delete this Project";
+  deleteProjectButton.textContent = "احذف هذه القائمة";
   projectEle.appendChild(deleteProjectButton);
 
   const addTodoButton = document.createElement("button");
-  addTodoButton.textContent = "Add new Todo";
+  addTodoButton.textContent = "اضف مهمه";
   projectEle.appendChild(addTodoButton);
 
   projectEle.addEventListener("mouseenter", e => {
@@ -150,13 +150,13 @@ function setupGloabalListeners(){
   e.preventDefault();
   const newTodo = new FormData(todoForm);
   if (App.getCurrentTodo() === null){
-    const todo = new Todo(newTodo.get("Title"), newTodo.get("Description"),
-    newTodo.get("DueDate"), newTodo.get("Priority"), newTodo.get("Notes"))
+    const todo = new Todo(newTodo.get("title"), newTodo.get("description"),
+    newTodo.get("dueDate"), newTodo.get("priority"), newTodo.get("notes"))
     App.getCurrentProject().addTodo(todo);
   }
   else{
-    App.getCurrentTodo().updateDetales(newTodo.get("Title"), newTodo.get("Description"),
-    newTodo.get("DueDate"), newTodo.get("Priority"), newTodo.get("Notes"))
+    App.getCurrentTodo().updateDetales(newTodo.get("title"), newTodo.get("description"),
+    newTodo.get("dueDate"), newTodo.get("priority"), newTodo.get("notes"))
   }
   todoDilogEle.close();
   todoForm.reset();
@@ -168,10 +168,10 @@ function setupGloabalListeners(){
     e.preventDefault();
     const newProject = new FormData(projectForm);
     if (App.getCurrentProject() === null){
-      App.createNewProject(newProject.get("Name"));
+      App.createNewProject(newProject.get("name"));
     }
     else{
-      App.getCurrentProject().updateDetales(newProject.get("Name"));
+      App.getCurrentProject().updateDetales(newProject.get("name"));
     }
     projectDilogEle.close();
     projectForm.reset();
