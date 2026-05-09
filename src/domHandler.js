@@ -3,20 +3,10 @@ import {Todo} from "./todo.js"
 // DOM Elements:
 const addProjectButton = document.createElement("button");
 addProjectButton.textContent = "Create new Project"
-document.body.appendChild(addProjectButton);
-addProjectButton.addEventListener("click", e => {
-  projectForm.reset();
-  App.setCurrentProject(null);
-  projectDilogEle.showModal();
-})
-const todoDilogEle = document.querySelector(".todoDialog");
-const todoForm = createTodoForm();
-todoDilogEle.appendChild(todoForm);
-
 const projectDilogEle = document.createElement("dialog");
 const projectForm = createProjectForm();
-projectDilogEle.appendChild(projectForm);
-document.body.appendChild(projectDilogEle);
+const todoDilogEle = document.querySelector(".todoDialog");
+const todoForm = createTodoForm();
 
 
 
@@ -62,24 +52,6 @@ function fillTodoForm(todo){
   todoForm.Notes.value = todo.getNotes();
 }
 
-todoForm.addEventListener("submit", e =>{
-  e.preventDefault();
-  const newTodo = new FormData(todoForm);
-  if (App.getCurrentTodo() === null){
-    const todo = new Todo(newTodo.get("Title"), newTodo.get("Description"),
-    newTodo.get("DueDate"), newTodo.get("Priority"), newTodo.get("Notes"))
-    App.getCurrentProject().addTodo(todo);
-  }
-  else{
-    App.getCurrentTodo().updateDetales(newTodo.get("Title"), newTodo.get("Description"),
-    newTodo.get("DueDate"), newTodo.get("Priority"), newTodo.get("Notes"))
-  }
-  todoDilogEle.close();
-  todoForm.reset();
-  render();
-})
-
-
 function createProjectForm(){
   const projectForm = document.createElement("form");
   const nameField = createInputField("Name")
@@ -91,21 +63,6 @@ function createProjectForm(){
 function fillProjectForm(project){
   projectForm.Name.value = project.getName();
 }
-
-projectForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const newProject = new FormData(projectForm);
-  if (App.getCurrentProject() === null){
-    App.createNewProject(newProject.get("Name"));
-  }
-  else{
-    App.getCurrentProject().updateDetales(newProject.get("Name"));
-  }
-  projectDilogEle.close();
-  projectForm.reset();
-  render();
-})
-
 
 // Create DOM element with event handlers for a todo
 function createTodoEle(todo) {
@@ -158,6 +115,59 @@ function createProjectEle(project) {
   })
   
   return projectEle;
+}
+
+
+export function init(){
+  todoDilogEle.appendChild(todoForm);
+  projectDilogEle.appendChild(projectForm);
+
+  document.body.appendChild(projectDilogEle);
+  document.body.appendChild(addProjectButton);
+
+  setupGloabalListeners()
+  render();
+}
+
+function setupGloabalListeners(){
+
+  todoForm.addEventListener("submit", e =>{
+  e.preventDefault();
+  const newTodo = new FormData(todoForm);
+  if (App.getCurrentTodo() === null){
+    const todo = new Todo(newTodo.get("Title"), newTodo.get("Description"),
+    newTodo.get("DueDate"), newTodo.get("Priority"), newTodo.get("Notes"))
+    App.getCurrentProject().addTodo(todo);
+  }
+  else{
+    App.getCurrentTodo().updateDetales(newTodo.get("Title"), newTodo.get("Description"),
+    newTodo.get("DueDate"), newTodo.get("Priority"), newTodo.get("Notes"))
+  }
+  todoDilogEle.close();
+  todoForm.reset();
+  render();
+})
+
+  projectForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const newProject = new FormData(projectForm);
+    if (App.getCurrentProject() === null){
+      App.createNewProject(newProject.get("Name"));
+    }
+    else{
+      App.getCurrentProject().updateDetales(newProject.get("Name"));
+    }
+    projectDilogEle.close();
+    projectForm.reset();
+    render();
+  })
+
+  addProjectButton.addEventListener("click", e => {
+    projectForm.reset();
+    App.setCurrentProject(null);
+    projectDilogEle.showModal();
+  }) 
+
 }
 
 export function render(){
