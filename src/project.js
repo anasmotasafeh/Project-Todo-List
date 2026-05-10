@@ -1,35 +1,35 @@
-class Project{
-  constructor(name){
+class Project {
+  constructor(name) {
     this.id = crypto.randomUUID();
     this.name = name;
     this.todos = [];
   }
 
-  getId(){
+  getId() {
     return this.id;
   }
 
-  getName(){
+  getName() {
     return this.name;
   }
 
-  getTodos(){
+  getTodos() {
     return this.todos.slice();
   }
 
-  addTodo(todo){
+  addTodo(todo) {
     this.todos.push(todo);
   }
-  updateDetales(name){
+  updateDetales(name) {
     this.name = name;
   }
-  removeTodo(todo){
-    let index = this.todos.findIndex(t => t.getId() === todo.getId())
+  removeTodo(todo) {
+    let index = this.todos.findIndex((t) => t.getId() === todo.getId());
     this.todos.splice(index, 1);
   }
-  markTodoAsComplete(todo){
+  markTodoAsComplete(todo) {
     todo.markAsComplete();
   }
 }
 
-export{Project};
+export { Project };

@@ -1,6 +1,5 @@
 export class Todo {
-
-  constructor(title, description, dueDate, priority, notes){
+  constructor(title, description, dueDate, priority, notes) {
     this.id = crypto.randomUUID();
     this.title = title;
     this.description = description;
@@ -10,32 +9,32 @@ export class Todo {
     this.completed = false;
   }
 
-  getId(){
+  getId() {
     return this.id;
   }
-  getTitle(){
+  getTitle() {
     return this.title;
   }
-  getDescription(){
+  getDescription() {
     return this.description;
   }
-  getDueDate(){
+  getDueDate() {
     return this.dueDate;
   }
-  getPriority(){
+  getPriority() {
     return this.priority;
   }
-  getNotes(){
+  getNotes() {
     return this.notes;
   }
-  updateDetales(title, description, dueDate, priority, notes){
+  updateDetales(title, description, dueDate, priority, notes) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
     this.notes = notes;
   }
-  markAsComplete(){
+  markAsComplete() {
     this.completed = true;
   }
 }

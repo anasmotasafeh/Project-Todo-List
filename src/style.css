@@ -14,7 +14,11 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   background-color: var(--bg);
   color: var(--text-main);
   margin: 0;
@@ -35,7 +39,8 @@ body {
 }
 
 /* --- 3. Project Cards --- */
-.projects > div { /* This targets your projectEle */
+.projects > div {
+  /* This targets your projectEle */
   background: var(--card-bg);
   border-radius: var(--radius);
   border: 1px solid var(--border);
@@ -52,8 +57,8 @@ body {
 }
 
 /* Project Header styling */
-.projects > div > b, 
-.projects > div:first-child { 
+.projects > div > b,
+.projects > div:first-child {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--primary);
@@ -63,7 +68,8 @@ body {
 }
 
 /* --- 4. Todo Items --- */
-.projects div div { /* This targets your todoEle */
+.projects div div {
+  /* This targets your todoEle */
   background: var(--bg);
   padding: 12px;
   border-radius: 8px;
@@ -116,7 +122,7 @@ button:not([data-id]):not(body > button) {
 }
 
 /* Delete Buttons */
-button[data-id], 
+button[data-id],
 .projects button:first-of-type {
   background: transparent;
   color: var(--text-muted);
@@ -124,7 +130,7 @@ button[data-id],
   padding: 4px 8px;
 }
 
-button[data-id]:hover, 
+button[data-id]:hover,
 .projects button:first-of-type:hover {
   color: var(--danger);
   background: #fee2e2;
@@ -176,7 +182,7 @@ input:focus {
   border-color: transparent;
 }
 
-form button[type="submit"], 
+form button[type="submit"],
 form button:last-child {
   background: var(--success);
   color: white;

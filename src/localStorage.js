@@ -16,17 +16,16 @@ function storageAvailable(type) {
   }
 }
 
-export function getFromStorage(key){
-  if(!localStorage.getItem(key)){
+export function getFromStorage(key) {
+  if (!localStorage.getItem(key)) {
     return null;
-  }
-  else{
+  } else {
     return JSON.parse(localStorage.getItem(key));
   }
 }
 
-export function saveToStorage(key, data){
+export function saveToStorage(key, data) {
   if (storageAvailable("localStorage")) {
     localStorage.setItem(key, JSON.stringify(data));
-  } 
+  }
 }
